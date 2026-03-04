@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BahiFlow | Automate B2B Collections on WhatsApp</title>
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="BahiFlow | Recover overdue payments while you sleep">
+    <meta property="og:description"
+        content="WhatsApp reminders get 3x more responses than phone calls. Automated B2B collections for Indian SMBs. 30-day free pilot.">
+    <meta property="og:image" content="./bahiflow_logo.png">
+    <meta property="og:url" content="https://bahiflow.in">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BahiFlow | Automated B2B Collections on WhatsApp">
+    <meta name="twitter:description"
+        content="WhatsApp reminders get 3x more responses than phone calls. 30-day free pilot.">
+    <meta name="twitter:image" content="./bahiflow_logo.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./bahiflow_favicon.png">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        orange: '#FF6B35',
+                        'orange-dark': '#e85b24',
+                        green: '#2E7D32',
+                        'green-light': '#388E3C',
+                        navy: '#1A202C',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        html, body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .gradient-orange {
+            background: linear-gradient(135deg, #FF6B35 0%, #e85b24 100%);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .count-up {
+            animation: countUp 0.6s ease-out forwards;
+        }
+
+        /* Timeline */
+        .timeline-line {
+            position: absolute;
+            top: 24px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4CAF50 0%, #FF9800 40%, #FF6B35 70%, #D32F2F 100%);
+            border-radius: 2px;
+        }
+
+        /* FAQ accordion */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .faq-item.active .faq-answer {
+            padding-top: 12px;
+            opacity: 1;
+        }
+
+        .faq-item.active .faq-chevron {
+            transform: rotate(180deg);
+        }
+
+        .faq-chevron {
+            transition: transform 0.3s ease;
+        }
+        .faq-item button {
+            min-height: 48px;
+        }
+
+        /* WhatsApp Chat Mockup */
+        .wa-phone {
+            background: #ECE5DD;
+            border-radius: 1.5rem;
+            border: 2px solid #333;
+            overflow: hidden;
+            max-width: min(340px, 100%);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+        }
+        .wa-phone-header {
+            background: #075E54;
+            color: white;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .wa-phone-header::before {
+            content: '';
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            flex-shrink: 0;
+        }
+        .wa-bubble-in {
+            background: white;
+            border-radius: 0 12px 12px 12px;
+            padding: 8px 12px;
+            margin: 6px 40px 6px 12px;
+            font-size: 13px;
+            line-height: 1.4;
+            position: relative;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.08);
+        }
+        .wa-bubble-out {
+            background: #DCF8C6;
+            border-radius: 12px 0 12px 12px;
+            padding: 8px 12px;
+            margin: 6px 12px 6px 40px;
+            font-size: 13px;
+            line-height: 1.4;
+            position: relative;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.08);
+        }
+        .wa-bubble-time {
+            font-size: 10px;
+            color: #999;
+            text-align: right;
+            margin-top: 4px;
+        }
+        /* Timeline tier preview */
+        .tier-preview-bubble {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        .tier-preview-bubble.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+</head>
+
+<body class="bg-[#FAFAFA] text-gray-900 flex flex-col min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-100 py-4 sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-3">
+                <img src="./bahiflow_logo.png" alt="BahiFlow Logo"
+                    class="h-12 sm:h-14 md:h-16 w-auto object-contain drop-shadow-sm">
+            </a>
+            <div class="hidden md:flex items-center gap-6">
+                <a href="#how-it-works" class="text-sm font-medium text-gray-600 hover:text-orange transition">How It Works</a>
+                <a href="#features" class="text-sm font-medium text-gray-600 hover:text-orange transition">Features</a>
+                <a href="#pricing" class="text-sm font-medium text-gray-600 hover:text-orange transition">Pricing</a>
+                <a href="#faq" class="text-sm font-medium text-gray-600 hover:text-orange transition">FAQ</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="mailto:contact@bahiflow.in"
+                    class="text-sm font-medium text-gray-500 hover:text-orange hidden lg:inline-block">contact@bahiflow.in</a>
+                <a href="https://wa.me/919164901097?text=START" target="_blank"
+                    class="bg-orange hover:bg-orange-dark text-white font-semibold py-2.5 px-6 rounded-lg transition shadow-sm">
+                    Start Free Pilot
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow">
+
+        <!-- Hero Section -->
+        <section class="py-20 lg:py-28 bg-white relative overflow-hidden">
+            <div class="absolute inset-0 opacity-5">
+                <div class="absolute top-10 right-10 w-96 h-96 bg-orange rounded-full blur-3xl"></div>
+                <div class="absolute bottom-10 left-10 w-72 h-72 bg-green rounded-full blur-3xl"></div>
+            </div>
+            <div class="max-w-6xl mx-auto px-4 relative z-10">
+                <div class="max-w-3xl mx-auto text-center">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange/10 text-orange text-sm font-semibold border border-orange/20 mb-6">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-orange"></span>
+                        </span>
+                        30-Day Free Pilot &mdash; No payment required
+                    </div>
+                    <h1
+                        class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-navy mb-6 leading-tight">
+                        Stop chasing payments.<br><span class="text-orange">Start recovering them.</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-600 mb-4 leading-relaxed max-w-2xl mx-auto">
+                        WhatsApp reminders get <strong class="text-navy">3x more responses</strong> than phone calls.
+                        One-tap UPI links. Hindi NLP. 7-step smart escalation starting before the due date. All on autopilot.
+                    </p>
+                    <p class="text-sm text-gray-500 mb-8 max-w-xl mx-auto italic">
+                        "Other tools tell you what's overdue. Chat platforms send messages. BahiFlow actually recovers the money."
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <a href="https://wa.me/919164901097?text=START" target="_blank"
+                            class="bg-orange hover:bg-orange-dark text-white text-lg font-bold py-4 px-10 rounded-xl transition shadow-lg shadow-orange/20 transform hover:-translate-y-0.5 inline-flex items-center justify-center gap-2">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            Start Recovery on WhatsApp
+                        </a>
+                        <a href="#how-it-works"
+                            class="bg-white hover:bg-gray-50 text-navy border border-gray-200 text-lg font-semibold py-4 px-10 rounded-xl transition shadow-sm">
+                            See how it works
+                        </a>
+                    </div>
+                    <!-- No Hidden Charges Callout -->
+                    <div class="mt-6 inline-flex items-center gap-3 bg-green/10 border border-green/20 rounded-xl px-5 py-3">
+                        <svg class="w-5 h-5 text-green flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                        <span class="text-sm font-bold text-navy">No credit limits. No per-message charges. Unlimited reminders.</span>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-400">Setup in 10 minutes. First Rs 1L recovered free. No commission during trial.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Proof Bar -->
+        <section class="bg-navy py-6">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div>
+                        <div class="text-2xl md:text-3xl font-extrabold text-white count-up">3x</div>
+                        <div class="text-xs md:text-sm text-gray-400 mt-1">More responses than<br>phone calls</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl md:text-3xl font-extrabold text-orange count-up">&lt;2%</div>
+                        <div class="text-xs md:text-sm text-gray-400 mt-1">Customer<br>opt-out rate</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl md:text-3xl font-extrabold text-white count-up">10 min</div>
+                        <div class="text-xs md:text-sm text-gray-400 mt-1">Setup time<br>via WhatsApp</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl md:text-3xl font-extrabold text-orange count-up">32+</div>
+                        <div class="text-xs md:text-sm text-gray-400 mt-1">Hindi keywords<br>understood</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WhatsApp Demo -->
+        <section class="py-20 bg-white">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="flex-1 max-w-lg">
+                        <h2 class="text-3xl md:text-4xl font-bold text-navy mb-6">See it in action</h2>
+                        <p class="text-gray-600 leading-relaxed mb-4">BahiFlow sends professional WhatsApp reminders on your behalf. Customers reply naturally in Hindi or English &mdash; the AI understands and tracks everything.</p>
+                        <ul class="space-y-3 text-sm text-gray-500">
+                            <li class="flex items-start gap-2"><span class="text-green mt-0.5">&#10003;</span> Pre-due courtesy reminders with UPI links</li>
+                            <li class="flex items-start gap-2"><span class="text-green mt-0.5">&#10003;</span> Hindi NLP parses "kal bhejta hoon" → commitment logged</li>
+                            <li class="flex items-start gap-2"><span class="text-green mt-0.5">&#10003;</span> Automatic escalation when commitments are missed</li>
+                        </ul>
+                    </div>
+                    <div class="wa-phone mx-auto" data-aos="fade-left">
+                        <div class="wa-phone-header">BahiFlow Collections</div>
+                        <div class="p-3 space-y-1">
+                            <div class="wa-bubble-in">
+                                <strong>Sharma Electronics</strong><br>
+                                Namaste Rajesh ji,<br><br>
+                                This is a courtesy reminder that Invoice <strong>INV-1042</strong> for <strong>Rs 45,000</strong> is due on <strong>5th March</strong>.<br><br>
+                                Pay now via UPI: <span class="text-blue-600 underline">pay.bahiflow.in/inv1042</span><br><br>
+                                Reply PAID if already paid, or DISPUTE if there's an issue.
+                                <div class="wa-bubble-time">9:32 AM</div>
+                            </div>
+                            <div class="wa-bubble-out">
+                                kal bhejta hoon bhai
+                                <div class="wa-bubble-time">10:15 AM</div>
+                            </div>
+                            <div class="wa-bubble-in">
+                                Noted, Rajesh ji! We've recorded your commitment to pay <strong>Rs 45,000</strong> by <strong>tomorrow (6th March)</strong>.<br><br>
+                                UPI link will be active: <span class="text-blue-600 underline">pay.bahiflow.in/inv1042</span><br><br>
+                                Thank you! 🙏
+                                <div class="wa-bubble-time">10:15 AM</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Problem Section -->
+        <section class="py-20 bg-[#FAFAFA]">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="max-w-3xl mx-auto text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-navy mb-6">Your money is stuck.<br>Your staff
+                        can't keep up.</h2>
+                    <p class="text-lg text-gray-600 leading-relaxed">
+                        Indian SMBs have lakhs locked in overdue invoices. Your staff makes 30 calls a day &mdash;
+                        10% response rate. Meanwhile, customers say "kal deta hoon" and nothing happens.
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center p-6" data-aos="fade-up" data-aos-delay="100">
+                        <div class="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-navy mb-2">Calls Go Unanswered</h3>
+                        <p class="text-gray-500 text-sm">Phone calls are ignored, screened, or forgotten. Your
+                            accounts team wastes hours dialing the same numbers.</p>
+                    </div>
+                    <div class="text-center p-6" data-aos="fade-up" data-aos-delay="200">
+                        <div class="w-16 h-16 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-navy mb-2">Cash Flow Bleeds</h3>
+                        <p class="text-gray-500 text-sm">Overdue invoices pile up. Suppliers want payment. Staff
+                            salaries are due. The cycle gets worse each month.</p>
+                    </div>
+                    <div class="text-center p-6" data-aos="fade-up" data-aos-delay="300">
+                        <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-navy mb-2">Staff Can't Scale</h3>
+                        <p class="text-gray-500 text-sm">One person handles ~50 follow-ups. Hiring more costs Rs
+                            15-25K/month each. And they still miss most invoices.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section id="how-it-works" class="py-20 bg-white">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-navy mb-4">How BahiFlow works</h2>
+                    <p class="text-gray-500 text-lg">Three steps. Zero manual follow-ups. Near-zero staff time.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <div class="relative bg-[#FAFAFA] rounded-2xl p-8 border border-gray-100" data-aos="fade-up" data-aos-delay="100">
+                        <div class="w-12 h-12 bg-orange text-white rounded-xl flex items-center justify-center mb-6 text-xl font-bold">1</div>
+                        <h3 class="text-xl font-bold text-navy mb-3">Upload your invoices</h3>
+                        <p class="text-gray-600 leading-relaxed">CSV upload or forward invoice PDFs on WhatsApp. Customer
+                            name, phone, amount, due date &mdash; that's all BahiFlow needs.</p>
+                    </div>
+                    <div class="relative bg-[#FAFAFA] rounded-2xl p-8 border border-gray-100" data-aos="fade-up" data-aos-delay="200">
+                        <div class="w-12 h-12 bg-green text-white rounded-xl flex items-center justify-center mb-6 text-xl font-bold">2</div>
+                        <h3 class="text-xl font-bold text-navy mb-3">BahiFlow sends smart reminders</h3>
+                        <p class="text-gray-600 leading-relaxed">Automated WhatsApp messages with one-tap UPI payment
+                            links. 6-tier escalation from polite to urgent. Hindi NLP understands every response.</p>
+                    </div>
+                    <div class="relative bg-[#FAFAFA] rounded-2xl p-8 border border-gray-100" data-aos="fade-up" data-aos-delay="300">
+                        <div class="w-12 h-12 bg-orange text-white rounded-xl flex items-center justify-center mb-6 text-xl font-bold">3</div>
+                        <h3 class="text-xl font-bold text-navy mb-3">Track & collect automatically</h3>
+                        <p class="text-gray-600 leading-relaxed">Morning action report at 9:30 AM. Daily recovery summary at 6 PM.
+                            Weekly analytics every Monday. You only act on exceptions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Escalation Timeline — The "Magic Trick" -->
+        <section class="py-20 bg-[#FAFAFA]">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-navy mb-4">Smart escalation that preserves relationships</h2>
+                    <p class="text-gray-500 text-lg max-w-2xl mx-auto">Starts 3 days <em>before</em> the due date with a courtesy reminder. 7 tiers over 38 days.
+                        Polite first, firmer only when needed. Your customers never feel harassed &mdash; they feel reminded.</p>
+                </div>
+
+                <!-- Desktop Timeline -->
+                <div class="hidden md:block max-w-5xl mx-auto relative">
+                    <div class="timeline-line"></div>
+                    <div class="grid grid-cols-7 gap-3 relative">
+                        <!-- Pre-Due Courtesy -->
+                        <div class="pt-10 text-center cursor-pointer hover:scale-105 transition-transform" data-tier="PRE">
+                            <div class="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center mx-auto mb-3 text-xs font-bold relative z-10 border-4 border-[#FAFAFA]">PRE</div>
+                            <h4 class="font-bold text-navy text-sm mb-1">Day &minus;3</h4>
+                            <p class="text-xs text-gray-500 leading-relaxed">Courtesy heads-up: "Payment due in 3 days" + UPI link</p>
+                        </div>
+                        <!-- Tier 1 -->
+                        <div class="pt-10 text-center cursor-pointer hover:scale-105 transition-transform" data-tier="T1">
+                            <div class="w-12 h-12 bg-green text-white rounded-full flex items-center justify-center mx-auto mb-3 text-sm font-bold relative z-10 border-4 border-[#FAFAFA]">T1</div>
+                            <h4 class="font-bold text-navy text-sm mb-1">Day 0</h4>
+                            <p class="text-xs text-gray-500 leading-relaxed">Due date reminder + UPI link + "Reply DISPUTE within 3 days"</p>
+                        </div>
+                        <!-- Tier 2 -->
+                        <div class="pt-10 text-center cursor-pointer hover:scale-105 transition-transform" data-tier="T2">
+                            <div class="w-12 h-12 bg-green text-white rounded-full flex items-center justify-center mx-auto mb-3 text-sm font-bold relative z-10 border-4 border-[#FAFAFA]">T2</div>
+                            <h4 class="font-bold text-navy text-sm mb-1">Day 3</h4>
+                            <p class="text-xs text-gray-500 leading-relaxed">Follow-up + partial payment option + PLAN hint</p>
+                        </div>
+                        <!-- Tier 3 -->
+                        <div class="pt-10 text-center cursor-pointer hover:scale-105 transition-transform" data-tier="T3">
+                            <div class="w-12 h-12 bg-amber-500 text-white rounded-full flex items-center justify-center mx-auto mb-3 text-sm font-bold relative z-10 border-4 border-[#FAFAFA]">T3</div>
+                            <h4 class="font-bold text-navy text-sm mb-1">Day 7</h4>
+                            <p class="text-xs text-gray-500 leading-relaxed">Firmer tone + "82% of customers pay within 7 days"</p>
+                        </div>
+                        <!-- Tier 4 -->
+                        <div class="pt-10 text-center cursor-pointer hover:scale-105 transition-transform" data-tier="T4">
+                            <div class="w-12 h-12 bg-amber-600 text-white rounded-full flex items-center justify-center mx-auto mb-3 text-sm font-bold relative z-10 border-4 border-[#FAFAFA]">T4</div>
+                            <h4 class="font-bold text-navy text-sm mb-1">Day 15</h4>
+                            <p class="text-xs text-gray-500 leading-relaxed">Urgent tone + escalation preview + payment plan offer</p>
+                        </div>
+                        <!-- Tier 5 -->
+                        <div class="pt-10 text-center cursor-pointer hover:scale-105 transition-transform" data-tier="T5">
+                            <div class="w-12 h-12 bg-orange text-white rounded-full flex items-center justify-center mx-auto mb-3 text-sm font-bold relative z-10 border-4 border-[#FAFAFA]">T5</div>
+                            <h4 class="font-bold text-navy text-sm mb-1">Day 30</h4>
+                            <p class="text-xs text-gray-500 leading-relaxed">Owner approval required. Escalation to decision-maker</p>
+                        </div>
+                        <!-- Tier 6 -->
+                        <div class="pt-10 text-center cursor-pointer hover:scale-105 transition-transform" data-tier="T6">
+                            <div class="w-12 h-12 bg-red-600 text-white rounded-full flex items-center justify-center mx-auto mb-3 text-sm font-bold relative z-10 border-4 border-[#FAFAFA]">T6</div>
+                            <h4 class="font-bold text-navy text-sm mb-1">Day 35</h4>
+                            <p class="text-xs text-gray-500 leading-relaxed">Final notice + account review warning. You decide next steps</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Timeline (accordion with WhatsApp messages) -->
+                <div class="md:hidden max-w-sm mx-auto space-y-2" id="mobile-timeline">
+                    <div class="mobile-tier rounded-xl border border-blue-200 overflow-hidden" data-tier-mobile="PRE">
+                        <button class="w-full flex items-center gap-3 p-4 bg-blue-50 text-left">
+                            <div class="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">PRE</div>
+                            <div class="flex-1"><h4 class="font-bold text-navy text-sm">Day &minus;3 — Courtesy Heads-up</h4><p class="text-xs text-gray-500">"Payment due in 3 days" + UPI link</p></div>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 mobile-tier-chevron transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="mobile-tier-msg" style="max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);"></div>
+                    </div>
+                    <div class="mobile-tier rounded-xl border border-gray-100 overflow-hidden" data-tier-mobile="T1">
+                        <button class="w-full flex items-center gap-3 p-4 bg-white text-left">
+                            <div class="w-10 h-10 bg-green text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">T1</div>
+                            <div class="flex-1"><h4 class="font-bold text-navy text-sm">Day 0 — Due Date Reminder</h4><p class="text-xs text-gray-500">UPI link + "Reply DISPUTE within 3 days"</p></div>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 mobile-tier-chevron transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="mobile-tier-msg" style="max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);"></div>
+                    </div>
+                    <div class="mobile-tier rounded-xl border border-gray-100 overflow-hidden" data-tier-mobile="T2">
+                        <button class="w-full flex items-center gap-3 p-4 bg-white text-left">
+                            <div class="w-10 h-10 bg-green text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">T2</div>
+                            <div class="flex-1"><h4 class="font-bold text-navy text-sm">Day 3 — Follow-up</h4><p class="text-xs text-gray-500">Partial payment option + PLAN hint</p></div>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 mobile-tier-chevron transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="mobile-tier-msg" style="max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);"></div>
+                    </div>
+                    <div class="mobile-tier rounded-xl border border-gray-100 overflow-hidden" data-tier-mobile="T3">
+                        <button class="w-full flex items-center gap-3 p-4 bg-white text-left">
+                            <div class="w-10 h-10 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">T3</div>
+                            <div class="flex-1"><h4 class="font-bold text-navy text-sm">Day 7 — Firmer Tone</h4><p class="text-xs text-gray-500">Social proof: "82% pay within 7 days"</p></div>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 mobile-tier-chevron transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="mobile-tier-msg" style="max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);"></div>
+                    </div>
+                    <div class="mobile-tier rounded-xl border border-gray-100 overflow-hidden" data-tier-mobile="T4">
+                        <button class="w-full flex items-center gap-3 p-4 bg-white text-left">
+                            <div class="w-10 h-10 bg-amber-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">T4</div>
+                            <div class="flex-1"><h4 class="font-bold text-navy text-sm">Day 15 — Urgent</h4><p class="text-xs text-gray-500">Escalation preview + payment plan</p></div>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 mobile-tier-chevron transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="mobile-tier-msg" style="max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);"></div>
+                    </div>
+                    <div class="mobile-tier rounded-xl border border-gray-100 overflow-hidden" data-tier-mobile="T5">
+                        <button class="w-full flex items-center gap-3 p-4 bg-white text-left">
+                            <div class="w-10 h-10 bg-orange text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">T5</div>
+                            <div class="flex-1"><h4 class="font-bold text-navy text-sm">Day 30 — Escalation</h4><p class="text-xs text-gray-500">Your approval required before sending</p></div>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 mobile-tier-chevron transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="mobile-tier-msg" style="max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);"></div>
+                    </div>
+                    <div class="mobile-tier rounded-xl border border-gray-100 overflow-hidden" data-tier-mobile="T6">
+                        <button class="w-full flex items-center gap-3 p-4 bg-white text-left">
+                            <div class="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">T6</div>
+                            <div class="flex-1"><h4 class="font-bold text-navy text-sm">Day 35 — Final Notice</h4><p class="text-xs text-gray-500">Account review warning. You decide next steps.</p></div>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 mobile-tier-chevron transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="mobile-tier-msg" style="max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);"></div>
+                    </div>
+                </div>
+
+                <!-- Tier Preview -->
+                <div id="tier-preview" class="max-w-sm mx-auto mt-8 hidden md:block">
+                    <div class="tier-preview-bubble">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div id="tier-badge" class="w-8 h-8 bg-green text-white rounded-full flex items-center justify-center text-xs font-bold"></div>
+                            <h4 id="tier-title" class="font-bold text-navy"></h4>
+                        </div>
+                        <div class="wa-phone" style="max-width: 100%;">
+                            <div class="wa-phone-header">BahiFlow Collections</div>
+                            <div class="p-3">
+                                <div class="wa-bubble-in" style="margin: 0; max-width: 100%;">
+                                    <p id="tier-message" class="text-sm text-gray-700 leading-relaxed"></p>
+                                    <div class="wa-bubble-time">10:00 AM</div>
+                                </div>
+                            </div>
+                        </div>
+                        <p id="tier-note" class="text-xs text-gray-400 mt-3 italic"></p>
+                    </div>
+                </div>
+
+                <div class="text-center mt-10">
+                    <p class="text-sm text-gray-500 max-w-lg mx-auto">Reminders start 3 days <em>before</em> the due date &mdash; so customers pay on time, not late. At every tier, they can reply PAID, DISPUTE, or make a commitment
+                        like "15 ko" &mdash; BahiFlow understands and responds instantly.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Grid -->
+        <section id="features" class="py-20 bg-white">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-navy mb-4">Why WhatsApp collections beats the
+                        alternatives</h2>
+                    <p class="text-gray-500 text-lg max-w-2xl mx-auto">Collection agencies take 5-15% and use
+                        threats. Software portals ignore the buyer's actual channel. BahiFlow does it right.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    <!-- Feature 1: Hindi NLP -->
+                    <div class="p-6 bg-[#FAFAFA] rounded-2xl border border-gray-100 hover:border-orange/20 hover:shadow-md transition-all group" data-aos="fade-up" data-aos-delay="100">
+                        <div class="w-12 h-12 bg-orange/10 text-orange rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-navy mb-2">Hindi NLP Engine</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">Understands "kal dunga", "15 ko", "is hafte",
+                            "agle hafte", "mahine ke end mein" and 32+ Hindi keywords. Your customers reply naturally.</p>
+                    </div>
+
+                    <!-- Feature 2: UPI Deep Links -->
+                    <div class="p-6 bg-[#FAFAFA] rounded-2xl border border-gray-100 hover:border-green/20 hover:shadow-md transition-all group" data-aos="fade-up" data-aos-delay="200">
+                        <div class="w-12 h-12 bg-green/10 text-green rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-navy mb-2">One-Tap UPI Payment</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">Customer taps the link, UPI app opens pre-filled.
+                            No typing, no errors. Also generates Razorpay payment links for online payments.</p>
+                    </div>
+
+                    <!-- Feature 3: Commitment Tracking -->
+                    <div class="p-6 bg-[#FAFAFA] rounded-2xl border border-gray-100 hover:border-orange/20 hover:shadow-md transition-all group" data-aos="fade-up" data-aos-delay="300">
+                        <div class="w-12 h-12 bg-orange/10 text-orange rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-navy mb-2">Commitment Tracking</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">Customer says "next week" or "15 ko"? System
+                            auto-schedules a follow-up. No commitment falls through the cracks.</p>
+                    </div>
+
+                    <!-- Feature 4: Cash Logging -->
+                    <div class="p-6 bg-[#FAFAFA] rounded-2xl border border-gray-100 hover:border-green/20 hover:shadow-md transition-all group" data-aos="fade-up" data-aos-delay="100">
+                        <div class="w-12 h-12 bg-green/10 text-green rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-navy mb-2">Cash & Cheque Logging</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">Staff sends "LOG Rs 50000 from Customer Name"
+                            on WhatsApp. System records payment, sends receipt to customer. Works for cash, cheque, NEFT.</p>
+                    </div>
+
+                    <!-- Feature 5: Payment Verification -->
+                    <div class="p-6 bg-[#FAFAFA] rounded-2xl border border-gray-100 hover:border-orange/20 hover:shadow-md transition-all group" data-aos="fade-up" data-aos-delay="200">
+                        <div class="w-12 h-12 bg-orange/10 text-orange rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-navy mb-2">Payment Verification Gate</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">Customer claims they paid? You get a CONFIRM/REJECT
+                            workflow on WhatsApp. No more he-said-she-said about payments.</p>
+                    </div>
+
+                    <!-- Feature 6: Dispute Handling -->
+                    <div class="p-6 bg-[#FAFAFA] rounded-2xl border border-gray-100 hover:border-green/20 hover:shadow-md transition-all group" data-aos="fade-up" data-aos-delay="300">
+                        <div class="w-12 h-12 bg-green/10 text-green rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-navy mb-2">Proactive Dispute Handling</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">Day 0 message invites disputes upfront: "Reply DISPUTE within 3 days if incorrect."
+                            Disputes auto-pause reminders and notify you immediately.</p>
+                    </div>
+
+                    <!-- Feature 7: Payment Plans -->
+                    <div class="p-6 bg-[#FAFAFA] rounded-2xl border border-gray-100 hover:border-orange/20 hover:shadow-md transition-all group" data-aos="fade-up" data-aos-delay="100">
+                        <div class="w-12 h-12 bg-orange/10 text-orange rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-navy mb-2">Payment Plans</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">Large invoice (Rs 50K+)? Customer replies PLAN and gets
+                            2 or 3 installment options via WhatsApp. Recovers money that would otherwise be stuck.</p>
+                    </div>
+
+                    <!-- Feature 8: HOLD/PAUSE/RESUME -->
+                    <div class="p-6 bg-[#FAFAFA] rounded-2xl border border-gray-100 hover:border-green/20 hover:shadow-md transition-all group" data-aos="fade-up" data-aos-delay="200">
+                        <div class="w-12 h-12 bg-green/10 text-green rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-navy mb-2">HOLD / PAUSE / RESUME</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">Send HOLD or PAUSE on WhatsApp for any customer.
+                            Timed holds auto-resume (max 90 days). Full control over who gets reminders.</p>
+                    </div>
+
+                    <!-- Feature 9: SMB Trust Layer -->
+                    <div class="p-6 bg-gradient-to-br from-navy to-gray-800 rounded-2xl border border-navy/20 hover:shadow-lg transition-all group text-white" data-aos="fade-up" data-aos-delay="300">
+                        <div class="w-12 h-12 bg-white/20 text-white rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">SMB Trust Layer</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">Morning report (9:30 AM), daily summary (6 PM),
+                            weekly analytics (Monday). Commitment notifications in real-time. Escalation approval gate beyond Day 30. You're always in control.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Hindi NLP Showcase -->
+        <section class="py-20 bg-navy">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="text-center mb-14">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Hindi NLP that actually understands</h2>
+                    <p class="text-gray-400 text-lg max-w-2xl mx-auto">Your customers reply in Hindi, Hinglish, or shorthand. BahiFlow understands 32+ keywords and extracts intent, date, and confidence.</p>
+                </div>
+                <div class="max-w-3xl mx-auto" data-aos="fade-up">
+                    <!-- Main Demo -->
+                    <div class="bg-white/10 rounded-2xl p-8 mb-8 backdrop-blur-sm border border-white/10">
+                        <div class="flex flex-col md:flex-row items-center gap-6">
+                            <div class="flex-1">
+                                <div class="wa-bubble-out" style="margin: 0; background: #DCF8C6; color: #111;">
+                                    "kal bhejta hoon"
+                                    <div class="wa-bubble-time" style="color: #777;">10:15 AM</div>
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0 text-center">
+                                <svg class="w-8 h-8 text-orange mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                                <span class="text-xs text-gray-400 block mt-1">AI Parse</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="bg-white rounded-xl p-4 text-sm">
+                                    <div class="flex justify-between mb-2"><span class="text-gray-500">Status:</span> <span class="font-bold text-amber-600">Commitment</span></div>
+                                    <div class="flex justify-between mb-2"><span class="text-gray-500">Date:</span> <span class="font-bold text-navy">Tomorrow</span></div>
+                                    <div class="flex justify-between"><span class="text-gray-500">Confidence:</span> <span class="font-bold text-green">95%</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- More Examples Grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-white/10 rounded-xl p-4 border border-white/10" data-aos="fade-up" data-aos-delay="100">
+                            <div class="wa-bubble-out" style="margin: 0 0 8px 0; background: #DCF8C6; color: #111; font-size: 13px;">
+                                "15 ko"
+                                <div class="wa-bubble-time" style="color: #777;">10:20 AM</div>
+                            </div>
+                            <p class="text-xs text-green font-medium text-center">→ Payment on 15th</p>
+                        </div>
+                        <div class="bg-white/10 rounded-xl p-4 border border-white/10" data-aos="fade-up" data-aos-delay="200">
+                            <div class="wa-bubble-out" style="margin: 0 0 8px 0; background: #DCF8C6; color: #111; font-size: 13px;">
+                                "agle hafte"
+                                <div class="wa-bubble-time" style="color: #777;">10:22 AM</div>
+                            </div>
+                            <p class="text-xs text-green font-medium text-center">→ Next week</p>
+                        </div>
+                        <div class="bg-white/10 rounded-xl p-4 border border-white/10" data-aos="fade-up" data-aos-delay="300">
+                            <div class="wa-bubble-out" style="margin: 0 0 8px 0; background: #DCF8C6; color: #111; font-size: 13px;">
+                                "is hafte"
+                                <div class="wa-bubble-time" style="color: #777;">10:25 AM</div>
+                            </div>
+                            <p class="text-xs text-green font-medium text-center">→ This week</p>
+                        </div>
+                        <div class="bg-white/10 rounded-xl p-4 border border-white/10" data-aos="fade-up" data-aos-delay="400">
+                            <div class="wa-bubble-out" style="margin: 0 0 8px 0; background: #DCF8C6; color: #111; font-size: 13px;">
+                                "mahine ke end mein"
+                                <div class="wa-bubble-time" style="color: #777;">10:30 AM</div>
+                            </div>
+                            <p class="text-xs text-green font-medium text-center">→ Month end</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROI Section -->
+        <section class="py-20 bg-[#FAFAFA]">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-navy mb-4">The math is simple</h2>
+                    <p class="text-gray-500 text-lg max-w-2xl mx-auto">Your staff costs Rs 18,000/month to make 30 calls a day.
+                        BahiFlow costs Rs 249/month to send hundreds of reminders.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <!-- Without BahiFlow -->
+                    <div class="bg-white rounded-2xl p-8 border border-red-100 shadow-sm" data-aos="fade-right">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 bg-red-50 text-red-500 rounded-xl flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-bold text-navy">Without BahiFlow</h3>
+                        </div>
+                        <div class="space-y-4 text-sm text-gray-600">
+                            <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                                <span>Staff salary (chasing payments)</span>
+                                <span class="font-bold text-red-500">Rs 18,000/mo</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                                <span>Calls per day</span>
+                                <span class="font-bold text-navy">~30</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                                <span>Response rate</span>
+                                <span class="font-bold text-red-500">~10%</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                                <span>Recovery on Rs 30L overdue (90 days)</span>
+                                <span class="font-bold text-navy">Rs 9-12L</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span>Staff cost over 3 months</span>
+                                <span class="font-bold text-red-500">Rs 54,000</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- With BahiFlow -->
+                    <div class="bg-navy rounded-2xl p-8 text-white shadow-lg relative overflow-hidden" data-aos="fade-left">
+                        <div class="absolute top-3 right-3 bg-orange text-white text-xs font-bold px-3 py-1 rounded-full">12-36x ROI</div>
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 bg-green/20 text-green rounded-xl flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-bold">With BahiFlow</h3>
+                        </div>
+                        <div class="space-y-4 text-sm text-gray-300">
+                            <div class="flex justify-between items-center py-2 border-b border-white/10">
+                                <span>BahiFlow cost</span>
+                                <span class="font-bold text-green">Rs 249/mo</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-white/10">
+                                <span>Reminders per day</span>
+                                <span class="font-bold text-white">Hundreds</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-white/10">
+                                <span>Response rate</span>
+                                <span class="font-bold text-green">30%+</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-white/10">
+                                <span>Recovery on Rs 30L overdue (90 days)</span>
+                                <span class="font-bold text-white">Rs 15-18L</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span>Total cost over 3 months (incl. 1.5% commission)</span>
+                                <span class="font-bold text-green">~Rs 37,000</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-white/10 text-center">
+                            <p class="text-lg font-bold text-orange">Rs 3-9L extra recovered</p>
+                            <p class="text-xs text-gray-400 mt-1">Pay less. Recover more. Staff focuses on growing the business.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Competitor Comparison -->
+        <section class="py-20 bg-white">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-navy mb-4">Compare your options</h2>
+                    <p class="text-gray-500 text-lg max-w-2xl mx-auto">There are many ways to chase payments. Only one combines
+                        WhatsApp + Hindi NLP + UPI + smart escalation.</p>
+                </div>
+                <div class="max-w-5xl mx-auto overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b-2 border-gray-200">
+                                <th class="text-left py-4 px-4 text-gray-500 font-medium">Feature</th>
+                                <th class="text-center py-4 px-4 text-orange font-bold bg-orange/5 rounded-t-lg">BahiFlow</th>
+                                <th class="text-center py-4 px-4 text-gray-500 font-medium">SaaS Collection Platforms</th>
+                                <th class="text-center py-4 px-4 text-gray-500 font-medium">Collection Agency</th>
+                                <th class="text-center py-4 px-4 text-gray-500 font-medium">Hire Staff</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-600">
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 px-4 font-medium">Annual Cost</td>
+                                <td class="py-3 px-4 text-center font-bold text-navy bg-orange/5">Rs 2,999/yr</td>
+                                <td class="py-3 px-4 text-center">Rs 36K-1.2L/yr</td>
+                                <td class="py-3 px-4 text-center">5-15% commission</td>
+                                <td class="py-3 px-4 text-center">Rs 1.8-3L/yr salary</td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 px-4 font-medium">WhatsApp Native</td>
+                                <td class="py-3 px-4 text-center font-bold text-green bg-orange/5">Yes (core channel)</td>
+                                <td class="py-3 px-4 text-center text-red-400">Email + portal</td>
+                                <td class="py-3 px-4 text-center text-red-400">Phone calls</td>
+                                <td class="py-3 px-4 text-center text-amber-500">Manual calls</td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 px-4 font-medium">Hindi Support</td>
+                                <td class="py-3 px-4 text-center font-bold text-green bg-orange/5">32+ keywords + dates</td>
+                                <td class="py-3 px-4 text-center text-red-400">No</td>
+                                <td class="py-3 px-4 text-center text-amber-500">Agent-dependent</td>
+                                <td class="py-3 px-4 text-center text-green">Yes</td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 px-4 font-medium">Auto Escalation</td>
+                                <td class="py-3 px-4 text-center font-bold text-green bg-orange/5">7-step, starts 3 days early</td>
+                                <td class="py-3 px-4 text-center text-amber-500">Template emails</td>
+                                <td class="py-3 px-4 text-center text-red-400">Threats & legal</td>
+                                <td class="py-3 px-4 text-center text-red-400">No system</td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 px-4 font-medium">UPI Deep Links</td>
+                                <td class="py-3 px-4 text-center font-bold text-green bg-orange/5">One-tap payment</td>
+                                <td class="py-3 px-4 text-center text-amber-500">Payment link</td>
+                                <td class="py-3 px-4 text-center text-red-400">No</td>
+                                <td class="py-3 px-4 text-center text-red-400">No</td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 px-4 font-medium">Commitment Tracking</td>
+                                <td class="py-3 px-4 text-center font-bold text-green bg-orange/5">Auto ("kal dunga")</td>
+                                <td class="py-3 px-4 text-center text-red-400">No</td>
+                                <td class="py-3 px-4 text-center text-red-400">Manual notes</td>
+                                <td class="py-3 px-4 text-center text-red-400">Manual notes</td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 px-4 font-medium">Cash Logging</td>
+                                <td class="py-3 px-4 text-center font-bold text-green bg-orange/5">WhatsApp command</td>
+                                <td class="py-3 px-4 text-center text-amber-500">Portal entry</td>
+                                <td class="py-3 px-4 text-center text-red-400">Paper</td>
+                                <td class="py-3 px-4 text-center text-amber-500">Manual</td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 px-4 font-medium">Payment Plans</td>
+                                <td class="py-3 px-4 text-center font-bold text-green bg-orange/5">PLAN keyword (2-3 parts)</td>
+                                <td class="py-3 px-4 text-center text-red-400">No</td>
+                                <td class="py-3 px-4 text-center text-amber-500">Manual negotiation</td>
+                                <td class="py-3 px-4 text-center text-red-400">No</td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 px-4 font-medium">Owner Trust Layer</td>
+                                <td class="py-3 px-4 text-center font-bold text-green bg-orange/5">6 features</td>
+                                <td class="py-3 px-4 text-center text-amber-500">Reports only</td>
+                                <td class="py-3 px-4 text-center text-red-400">No</td>
+                                <td class="py-3 px-4 text-center text-red-400">No</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-medium">Setup Time</td>
+                                <td class="py-3 px-4 text-center font-bold text-green bg-orange/5">10 minutes</td>
+                                <td class="py-3 px-4 text-center">Days (integration)</td>
+                                <td class="py-3 px-4 text-center">Weeks (contract)</td>
+                                <td class="py-3 px-4 text-center">Hours-Days</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust Signals -->
+        <section class="py-20 bg-[#FAFAFA]">
+            <div class="max-w-4xl mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-navy mb-4">Collections without the guilt</h2>
+                    <p class="text-gray-500 text-lg">Your relationships matter. BahiFlow protects them.</p>
+                </div>
+                <div class="grid sm:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-2xl p-6 border border-gray-100 flex items-start gap-4">
+                        <div class="w-10 h-10 bg-green/10 text-green rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-navy mb-1">Not a debt collection agency</h3>
+                            <p class="text-sm text-gray-500">No legal threats, no harassment. Professional, polite
+                                WhatsApp reminders that YOUR customers recognize as coming from YOUR business.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 border border-gray-100 flex items-start gap-4">
+                        <div class="w-10 h-10 bg-green/10 text-green rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-navy mb-1">Instant opt-out, always respected</h3>
+                            <p class="text-sm text-gray-500">Customers reply STOP anytime. Bot stops immediately. You get notified.
+                                Meta/WhatsApp compliance built in.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 border border-gray-100 flex items-start gap-4">
+                        <div class="w-10 h-10 bg-green/10 text-green rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-navy mb-1">You approve every escalation beyond Day 30</h3>
+                            <p class="text-sm text-gray-500">Tier 5-6 requires your explicit SEND or SKIP reply. Nothing firm goes
+                                out without your approval.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 border border-gray-100 flex items-start gap-4">
+                        <div class="w-10 h-10 bg-green/10 text-green rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-navy mb-1">DPDP Act compliant</h3>
+                            <p class="text-sm text-gray-500">Data encrypted in transit and at rest. AWS India servers.
+                                Full consent tracking and opt-out support.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="py-20 bg-white">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-navy mb-4">Simple pricing. Pay only when we
+                        collect.</h2>
+                    <p class="text-gray-500 text-lg max-w-2xl mx-auto">No setup fees. No credit limits. No per-message charges.
+                        Unlimited reminders. Commission only on invoices stuck beyond 30 days. First Rs 1L recovered free.</p>
+                </div>
+                <div class="max-w-lg mx-auto">
+                    <div class="bg-white rounded-3xl border-2 border-orange shadow-xl p-10 relative" data-aos="zoom-in">
+                        <div
+                            class="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange text-white text-xs font-bold px-4 py-1 rounded-full">
+                            Single Plan &mdash; Everything Included</div>
+
+                        <div class="text-center mb-8">
+                            <div class="mb-2">
+                                <span class="text-5xl font-extrabold text-navy">&#8377;2,999</span>
+                                <span class="text-gray-400 text-lg">/year</span>
+                            </div>
+                            <p class="text-gray-500 text-sm">&#8377;249/month effective &mdash; less than one day of staff salary</p>
+                            <p class="text-green font-semibold text-sm mt-2">+ 1.5% commission on post-30-day recovery
+                                only</p>
+                        </div>
+
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-start gap-3 text-gray-700">
+                                <svg class="w-5 h-5 text-green flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span><strong>30-day free pilot</strong> &mdash; no payment, no commission</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-gray-700">
+                                <svg class="w-5 h-5 text-green flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span><strong>First Rs 1L recovered free</strong> &mdash; zero commission</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-gray-700">
+                                <svg class="w-5 h-5 text-green flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Unlimited WhatsApp messages</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-gray-700">
+                                <svg class="w-5 h-5 text-green flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Invoices paid within 30 days = <strong>zero commission</strong></span>
+                            </li>
+                            <li class="flex items-start gap-3 text-gray-700">
+                                <svg class="w-5 h-5 text-green flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>All 9 features &mdash; no add-ons, no hidden tiers</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-gray-700">
+                                <svg class="w-5 h-5 text-green flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Daily reports + weekly analytics</span>
+                            </li>
+                        </ul>
+
+                        <a href="https://wa.me/919164901097?text=START" target="_blank"
+                            class="block w-full text-center bg-orange hover:bg-orange-dark text-white font-bold text-lg py-4 rounded-xl transition shadow-lg shadow-orange/20">
+                            Start 30-Day Free Pilot
+                        </a>
+                        <div class="mt-4 bg-green/10 border border-green/20 rounded-lg p-3 text-center">
+                            <p class="text-xs font-bold text-green">No credit limits &bull; No per-message charges &bull; Unlimited reminders</p>
+                        </div>
+                        <p class="text-center text-xs text-gray-400 mt-3">No credit card. Cancel anytime. No lock-in.</p>
+                    </div>
+                </div>
+
+                <!-- ROI One-liner -->
+                <div class="max-w-2xl mx-auto mt-12 bg-navy rounded-2xl p-6 text-center text-white" data-aos="fade-up">
+                    <p class="text-sm leading-relaxed">
+                        <strong class="text-orange">The Rs 249/month pitch:</strong> Your staff spends 2 hours/day calling customers.
+                        That's Rs 600/day in salary &mdash; Rs 18,000/month. BahiFlow costs Rs 249/month and sends hundreds of reminders.
+                        <strong>Even recovering 10% more on Rs 30L</strong> puts Rs 3L extra in your bank. That's a <strong class="text-orange">150x return</strong>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Placeholder -->
+        <section class="py-16 bg-[#FAFAFA]">
+            <div class="max-w-4xl mx-auto px-4">
+                <div class="text-center mb-10">
+                    <h2 class="text-2xl md:text-3xl font-bold text-navy mb-4">What SMBs are saying</h2>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                        <div class="flex items-center gap-1 text-orange mb-3">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </div>
+                        <p class="text-gray-700 text-sm leading-relaxed mb-4">"Staff was making 50 calls a day before. Now zero.
+                            Customers actually respond to WhatsApp &mdash; they ignore our calls."</p>
+                        <p class="text-xs font-semibold text-navy">&mdash; Manufacturing SMB, Surat</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                        <div class="flex items-center gap-1 text-orange mb-3">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </div>
+                        <p class="text-gray-700 text-sm leading-relaxed mb-4">"82% of our customers now pay within 7 days.
+                            The UPI link is the game-changer &mdash; one tap and it's done."</p>
+                        <p class="text-xs font-semibold text-navy">&mdash; Auto Parts Distributor, Pune</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="py-20 bg-white">
+            <div class="max-w-3xl mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-navy mb-4">Frequently asked questions</h2>
+                    <p class="text-gray-500 text-lg">Everything you need to know before starting your free pilot.</p>
+                </div>
+                <div class="space-y-3">
+
+                    <div class="faq-item bg-[#FAFAFA] rounded-xl border border-gray-100 overflow-hidden">
+                        <button class="w-full flex items-center justify-between p-5 text-left">
+                            <span class="font-semibold text-navy pr-4">Will my customers get annoyed by WhatsApp messages?</span>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer px-5 pb-5 text-sm text-gray-600 leading-relaxed">
+                            No. Our 7-step escalation is designed to feel human, not spammy. It starts with a courtesy heads-up 3 days before the due date, then spaces messages over 35 days &mdash;
+                            max 7 messages total, business hours only (10 AM&ndash;6 PM). Customers can reply PAID, make a commitment,
+                            or DISPUTE at any point. Most prefer WhatsApp over phone calls (less intrusive). We see &lt;2% opt-out rates.
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-[#FAFAFA] rounded-xl border border-gray-100 overflow-hidden">
+                        <button class="w-full flex items-center justify-between p-5 text-left">
+                            <span class="font-semibold text-navy pr-4">What if I have important relationships with certain customers?</span>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer px-5 pb-5 text-sm text-gray-600 leading-relaxed">
+                            We never burn relationships. Tiers 1-3 are polite. We only escalate if there's no response.
+                            If a customer disputes, you get notified immediately and reminders pause automatically.
+                            You can also HOLD or PAUSE any customer anytime via WhatsApp. YOU stay in control.
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-[#FAFAFA] rounded-xl border border-gray-100 overflow-hidden">
+                        <button class="w-full flex items-center justify-between p-5 text-left">
+                            <span class="font-semibold text-navy pr-4">How does the 1.5% commission work?</span>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer px-5 pb-5 text-sm text-gray-600 leading-relaxed">
+                            Commission applies <strong>only</strong> on invoices that were overdue more than 30 days at the time
+                            of recovery. If your customer pays within 30 days of the due date, you pay zero commission.
+                            First Rs 1L recovered is also free. Collection agencies charge 5-15% &mdash; BahiFlow is 1.5%,
+                            and only on the truly stuck money. At 1.5% on Rs 20L recovered, you pay Rs 30K to get Rs 20L.
+                            ROI of 50:1+.
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-[#FAFAFA] rounded-xl border border-gray-100 overflow-hidden">
+                        <button class="w-full flex items-center justify-between p-5 text-left">
+                            <span class="font-semibold text-navy pr-4">What happens with cash or cheque payments?</span>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer px-5 pb-5 text-sm text-gray-600 leading-relaxed">
+                            Your staff sends "LOG Rs 50000 from Customer Name" on WhatsApp. The system records the payment
+                            and sends a receipt to the customer. Works for cash, cheque, NEFT &mdash; any offline payment method.
+                            This is built specifically for the way Indian SMBs actually work.
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-[#FAFAFA] rounded-xl border border-gray-100 overflow-hidden">
+                        <button class="w-full flex items-center justify-between p-5 text-left">
+                            <span class="font-semibold text-navy pr-4">What if a customer blocks the WhatsApp number or replies STOP?</span>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer px-5 pb-5 text-sm text-gray-600 leading-relaxed">
+                            Instant detection and notification to you. The bot stops messaging that customer immediately &mdash;
+                            zero spam risk, full Meta compliance. You can then follow up manually or through your staff.
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-[#FAFAFA] rounded-xl border border-gray-100 overflow-hidden">
+                        <button class="w-full flex items-center justify-between p-5 text-left">
+                            <span class="font-semibold text-navy pr-4">How long does it take to set up?</span>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer px-5 pb-5 text-sm text-gray-600 leading-relaxed">
+                            10 minutes via WhatsApp. Send START, upload your Tally CSV or invoice list, and BahiFlow begins
+                            the next morning. No software to install, no server, no IT team needed. First morning report
+                            arrives at 9:30 AM.
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-[#FAFAFA] rounded-xl border border-gray-100 overflow-hidden">
+                        <button class="w-full flex items-center justify-between p-5 text-left">
+                            <span class="font-semibold text-navy pr-4">Can I control which customers get reminders?</span>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer px-5 pb-5 text-sm text-gray-600 leading-relaxed">
+                            Yes. Mark any invoice as HOLD or PAUSE via WhatsApp. Paused invoices skip all reminders until
+                            you send RESUME. You can also set timed holds that auto-resume (max 90 days). Full control
+                            over your entire collections portfolio.
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-[#FAFAFA] rounded-xl border border-gray-100 overflow-hidden">
+                        <button class="w-full flex items-center justify-between p-5 text-left">
+                            <span class="font-semibold text-navy pr-4">Is my data safe?</span>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer px-5 pb-5 text-sm text-gray-600 leading-relaxed">
+                            All data encrypted in transit (HTTPS/TLS) and at rest. Stored on AWS servers in India.
+                            DPDP Act 2023 compliant &mdash; explicit consent tracking, opt-out support, data retention policies.
+                            We never share your customer data with other businesses.
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-[#FAFAFA] rounded-xl border border-gray-100 overflow-hidden">
+                        <button class="w-full flex items-center justify-between p-5 text-left">
+                            <span class="font-semibold text-navy pr-4">What's the difference between BahiFlow and a collection agency?</span>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer px-5 pb-5 text-sm text-gray-600 leading-relaxed">
+                            Collection agencies charge 5-15%, use threats, and often damage customer relationships.
+                            BahiFlow is a technology platform that sends professional, polite reminders via WhatsApp.
+                            Messages come from YOUR business name. You control the tone, pace, and escalation.
+                            Commission is just 1.5% (vs 5-15%), and only on truly stuck invoices. We preserve
+                            relationships &mdash; agencies burn them.
+                        </div>
+                    </div>
+
+                    <div class="faq-item bg-[#FAFAFA] rounded-xl border border-gray-100 overflow-hidden">
+                        <button class="w-full flex items-center justify-between p-5 text-left">
+                            <span class="font-semibold text-navy pr-4">Can I cancel anytime?</span>
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0 faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer px-5 pb-5 text-sm text-gray-600 leading-relaxed">
+                            Yes. Contact us to cancel. Your service continues until the end of the current billing period.
+                            No questions asked, no lock-in. Your data is preserved if you want to reactivate later.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="py-20 bg-navy relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute top-0 right-0 w-96 h-96 bg-orange rounded-full blur-3xl"></div>
+            </div>
+            <div class="max-w-3xl mx-auto px-4 text-center relative z-10">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Stop chasing. Start collecting.</h2>
+                <p class="text-lg text-gray-300 mb-4">Upload your invoices today. BahiFlow starts recovering
+                    tomorrow morning.</p>
+                <p class="text-sm text-orange font-semibold mb-10">30-day free pilot. First Rs 1L recovered free. No credit card.</p>
+                <a href="https://wa.me/919164901097?text=START" target="_blank"
+                    class="inline-flex items-center gap-2 bg-orange hover:bg-orange-dark text-white text-lg font-bold py-4 px-10 rounded-xl transition shadow-lg shadow-orange/30 transform hover:-translate-y-0.5">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Start Recovery on WhatsApp
+                </a>
+                <p class="mt-4 text-sm text-gray-500">Or email us at <a href="mailto:contact@bahiflow.in" class="text-gray-400 hover:text-white transition underline">contact@bahiflow.in</a></p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-start gap-8">
+                <div>
+                    <img src="./bahiflow_logo.png" alt="BahiFlow" class="h-10 w-auto mb-4 brightness-200">
+                    <p class="text-sm font-medium text-gray-300">
+                        BahiFlow&trade; is a product of OTD Business Solutions LLP.
+                    </p>
+                    <p class="text-xs mt-2 leading-relaxed">
+                        Registered Address: #1974B, 15th Cross, 24th Main,<br>
+                        Sector-1, HSR Layout, Bengaluru &ndash; 560102<br>
+                        GSTIN: 29AAFFO9728C1Z0
+                    </p>
+                    <p class="text-xs mt-2">
+                        <a href="mailto:contact@bahiflow.in" class="hover:text-white transition">contact@bahiflow.in</a>
+                    </p>
+                    <!-- Social Links -->
+                    <div class="flex items-center gap-4 mt-4">
+                        <a href="https://www.linkedin.com/company/otdbusiness" target="_blank" class="text-gray-500 hover:text-white transition" title="LinkedIn">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        </a>
+                        <a href="https://x.com/otdbusiness" target="_blank" class="text-gray-500 hover:text-white transition" title="X (Twitter)">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a href="https://www.instagram.com/otdbusiness" target="_blank" class="text-gray-500 hover:text-white transition" title="Instagram">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-3 text-sm">
+                    <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Links</span>
+                    <a href="#features" class="hover:text-white transition">Features</a>
+                    <a href="#pricing" class="hover:text-white transition">Pricing</a>
+                    <a href="#faq" class="hover:text-white transition">FAQ</a>
+                    <a href="./privacy_policy.html" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="./bahiflow_terms.html" class="hover:text-white transition">Terms of Service</a>
+                    <a href="https://otdbusiness.com" target="_blank" class="hover:text-white transition">OTD Business Solutions</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-6 text-center text-xs text-gray-500">
+                &copy; 2026 OTD Business Solutions LLP. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Sticky CTA -->
+    <div class="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white border-t border-gray-200 px-4 py-3 flex items-center justify-between shadow-lg">
+        <div>
+            <p class="text-sm font-bold text-navy">30-day free pilot</p>
+            <p class="text-xs text-gray-500">No payment required</p>
+        </div>
+        <a href="https://wa.me/919164901097?text=START" target="_blank"
+            class="bg-orange hover:bg-orange-dark text-white font-bold py-2.5 px-6 rounded-lg transition text-sm">
+            Start Free
+        </a>
+    </div>
+
+    <!-- Floating WhatsApp CTA -->
+    <a href="https://wa.me/919164901097?text=START" target="_blank"
+        class="fixed bottom-20 md:bottom-6 right-6 z-50 bg-green hover:bg-green-light text-white rounded-full p-4 shadow-2xl shadow-green/30 transition-all hover:scale-110 float-animation"
+        title="Chat on WhatsApp">
+        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg>
+    </a>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({ duration: 600, once: true, offset: 80 });
+
+        // FAQ Accordion (event-delegated, scrollHeight-based)
+        document.addEventListener('click', function(e) {
+            var button = e.target.closest('.faq-item button');
+            if (!button) return;
+            var item = button.closest('.faq-item');
+            var answer = item.querySelector('.faq-answer');
+            var isActive = item.classList.contains('active');
+            // Close all open items
+            document.querySelectorAll('.faq-item.active').forEach(function(open) {
+                open.classList.remove('active');
+                open.querySelector('.faq-answer').style.maxHeight = '0';
+            });
+            // Open clicked (if not already open)
+            if (!isActive) {
+                item.classList.add('active');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+            }
+        });
+
+        // Timeline Tier Preview
+        var tierMessages = {
+            PRE: {
+                title: 'Pre-Due Courtesy (Day \u22123)',
+                color: 'bg-blue-500',
+                message: '<strong>Sharma Electronics</strong><br>Namaste Rajesh ji,<br><br>This is a courtesy reminder that Invoice <strong>INV-1042</strong> for <strong>Rs 45,000</strong> is due on <strong>5th March</strong>.<br><br>Pay now via UPI: <span class="text-blue-600 underline">pay.bahiflow.in/inv1042</span><br><br>Reply PAID if already paid, or DISPUTE if there\'s an issue.',
+                note: 'Sent 3 days before due date. Polite, informational. Includes UPI link for early payment.'
+            },
+            T1: {
+                title: 'Tier 1 \u2014 Due Date (Day 0)',
+                color: 'bg-green',
+                message: '<strong>Sharma Electronics</strong><br>Hi Rajesh ji,<br><br>Invoice <strong>INV-1042</strong> for <strong>Rs 45,000</strong> is due today.<br><br>Pay via UPI: <span class="text-blue-600 underline">pay.bahiflow.in/inv1042</span><br><br>Reply PAID if done, DISPUTE within 3 days if incorrect.',
+                note: 'Due date reminder. Introduces dispute window. Still very polite.'
+            },
+            T2: {
+                title: 'Tier 2 \u2014 Follow-up (Day 3)',
+                color: 'bg-green',
+                message: '<strong>Sharma Electronics</strong><br>Hi Rajesh ji,<br><br>Invoice <strong>INV-1042</strong> for <strong>Rs 45,000</strong> is now 3 days past due.<br><br>Pay via UPI: <span class="text-blue-600 underline">pay.bahiflow.in/inv1042</span><br><br>Can\'t pay in full? Reply PLAN for installment options.',
+                note: 'First follow-up. Introduces partial payment/plan option.'
+            },
+            T3: {
+                title: 'Tier 3 \u2014 Firmer Tone (Day 7)',
+                color: 'bg-amber-500',
+                message: '<strong>Sharma Electronics</strong><br>Rajesh ji,<br><br>Invoice <strong>INV-1042</strong> for <strong>Rs 45,000</strong> is now 7 days overdue.<br><br>82% of customers pay within 7 days. Please clear this at your earliest.<br><br>UPI: <span class="text-blue-600 underline">pay.bahiflow.in/inv1042</span>',
+                note: 'Social proof + slight urgency. Still professional.'
+            },
+            T4: {
+                title: 'Tier 4 \u2014 Urgent (Day 15)',
+                color: 'bg-amber-600',
+                message: '<strong>Sharma Electronics</strong><br>Rajesh ji,<br><br>Invoice <strong>INV-1042</strong> for <strong>Rs 45,000</strong> is now 15 days overdue.<br><br>This will be escalated if not resolved soon. Reply PLAN for installment options.<br><br>UPI: <span class="text-blue-600 underline">pay.bahiflow.in/inv1042</span>',
+                note: 'Escalation preview. Payment plan still available.'
+            },
+            T5: {
+                title: 'Tier 5 \u2014 Escalation (Day 30)',
+                color: 'bg-orange',
+                message: '<em>[Requires your approval before sending]</em><br><br><strong>Sharma Electronics</strong><br>Rajesh ji,<br><br>Invoice <strong>INV-1042</strong> for <strong>Rs 45,000</strong> has been overdue for 30 days. This matter is being escalated to the business owner for review.',
+                note: 'YOU approve or skip this message. Nothing goes out without your say.'
+            },
+            T6: {
+                title: 'Tier 6 \u2014 Final Notice (Day 35)',
+                color: 'bg-red-600',
+                message: '<em>[Requires your approval before sending]</em><br><br><strong>Sharma Electronics</strong><br>Rajesh ji,<br><br>Final notice: Invoice <strong>INV-1042</strong> for <strong>Rs 45,000</strong> has been overdue for 35 days. Account under review. Please resolve immediately.',
+                note: 'Final automated message. You decide next steps after this.'
+            }
+        };
+
+        document.querySelectorAll('[data-tier]').forEach(function(node) {
+            node.addEventListener('click', function() {
+                var tier = this.getAttribute('data-tier');
+                var data = tierMessages[tier];
+                if (!data) return;
+                var preview = document.getElementById('tier-preview');
+                var bubble = preview.querySelector('.tier-preview-bubble');
+                // Update content
+                var badge = document.getElementById('tier-badge');
+                badge.className = 'w-8 h-8 ' + data.color + ' text-white rounded-full flex items-center justify-center text-xs font-bold';
+                badge.textContent = tier;
+                document.getElementById('tier-title').textContent = data.title;
+                document.getElementById('tier-message').innerHTML = data.message;
+                document.getElementById('tier-note').textContent = data.note;
+                // Highlight active tier
+                document.querySelectorAll('[data-tier]').forEach(function(n) { n.classList.remove('ring-2', 'ring-orange'); });
+                this.classList.add('ring-2', 'ring-orange');
+                // Animate preview
+                bubble.classList.remove('visible');
+                setTimeout(function() { bubble.classList.add('visible'); }, 50);
+            });
+        });
+
+        // Auto-click PRE tier on load (desktop)
+        var preTier = document.querySelector('[data-tier="PRE"]');
+        if (preTier) preTier.click();
+
+        // Mobile Timeline Accordion
+        document.querySelectorAll('[data-tier-mobile]').forEach(function(card) {
+            card.querySelector('button').addEventListener('click', function() {
+                var tier = card.getAttribute('data-tier-mobile');
+                var data = tierMessages[tier];
+                if (!data) return;
+                var msgContainer = card.querySelector('.mobile-tier-msg');
+                var isOpen = card.classList.contains('mobile-tier-active');
+                // Close all open mobile tiers
+                document.querySelectorAll('.mobile-tier-active').forEach(function(open) {
+                    open.classList.remove('mobile-tier-active');
+                    open.querySelector('.mobile-tier-msg').style.maxHeight = '0';
+                    open.querySelector('.mobile-tier-chevron').style.transform = '';
+                });
+                // Open clicked (if not already open)
+                if (!isOpen) {
+                    msgContainer.innerHTML = '<div class="px-4 pb-4"><div class="wa-phone" style="max-width:100%;"><div class="wa-phone-header">BahiFlow Collections</div><div class="p-3"><div class="wa-bubble-in" style="margin:0;max-width:100%;"><p class="text-sm text-gray-700 leading-relaxed">' + data.message + '</p><div class="wa-bubble-time">10:00 AM</div></div></div></div><p class="text-xs text-gray-400 mt-2 italic">' + data.note + '</p></div>';
+                    card.classList.add('mobile-tier-active');
+                    msgContainer.style.maxHeight = msgContainer.scrollHeight + 'px';
+                    card.querySelector('.mobile-tier-chevron').style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
